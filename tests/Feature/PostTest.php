@@ -35,6 +35,16 @@ class PostTest extends TestCase
             ->assertJsonFragment($postData);
     }
 
+    public function test_can_get_post(): void
+    {
+        $post = Post::factory()->create();
+
+        $response = $this->getJson("/api/posts/{$post->id}");
+
+        $response->assertStatus(200)
+            ->assertJsonFragment($post->toArray());
+    }
+
     public function test_can_update_post(): void
     {
         $post = Post::factory()->create();
