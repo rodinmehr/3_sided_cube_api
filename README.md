@@ -1,6 +1,6 @@
 # Laravel Blog API
 
-This is a simple RESTful API for a blog post system using Laravel. It provides CRUD operations for blog posts.
+This is a simple RESTful API for a blog post system using Laravel. It provides CRUD operations for blog posts. The API uses Laravel Sanctum for authentication.
 
 ## Requirements
 
@@ -31,7 +31,7 @@ This is a simple RESTful API for a blog post system using Laravel. It provides C
    php artisan key:generate
    ```
 
-5. Publish Laravel Sanctum provider:
+5. Publish Laravel Sanctum provider (if applicable):
    ```
    php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
    ```
@@ -57,11 +57,26 @@ The API will be available at `http://localhost:8000/api`.
 
 ## API Endpoints
 
-- GET `/api/posts`: Show all posts
-- POST `/api/posts`: Create a new post
-- GET `/api/posts/{id}`: Show a specific post
-- PUT `/api/posts/{id}`: Update a specific post
-- DELETE `/api/posts/{id}`: Delete a specific post
+- POST `/api/login`: Log in and receive an access token
+- POST `/api/logout`: Log out (requires authentication)
+- GET `/api/posts`: Show all posts (Public)
+- POST `/api/posts`: Create a new post (Requires Authentication)
+- GET `/api/posts/{id}`: Show a specific post (Public)
+- PUT `/api/posts/{id}`: Update a specific post (Requires Authentication)
+- DELETE `/api/posts/{id}`: Delete a specific post (Requires Authentication)
+
+You can use Postman collection that is provided in `3_sided_cube_api.postman_collection.json` file to test the endpoints.
+
+## Authentication
+
+This API uses Laravel Sanctum for authentication. To authenticate:
+
+1. Make a POST request to `/api/login` with the email and password to receive an access token.
+2. Include the access token in the `Authorization` header of the requests:
+
+```
+Authorization: Bearer {received_access_token}
+```
 
 ## Running Tests
 
