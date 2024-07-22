@@ -97,14 +97,13 @@ cp .env.example .env.testing
 Run migrations:
 
 ```
-php artisan config:cache --env=.env.testing
-php artisan migrate --env=.env.testing
+php artisan migrate --env=testing
 ```
 
 To run the feature tests, use the following command:
 
 ```
-php artisan test
+php artisan test --env=testing
 ```
 
 ## License

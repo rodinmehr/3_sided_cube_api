@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->timestamp('scheduled_at')->nullable();
-            $table->timestamp('published_at')->nullable();
+            $table->timestamp('scheduled_at')->after('author')->nullable();
+            $table->timestamp('published_at')->after('scheduled_at')->nullable();
         });
     }
 

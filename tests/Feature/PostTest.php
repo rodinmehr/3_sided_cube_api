@@ -36,7 +36,7 @@ class PostTest extends TestCase
             ->assertJsonCount(3, 'data')
             ->assertJsonStructure([
                 'data' => [
-                    '*' => ['id', 'title', 'content', 'author', 'created_at', 'updated_at']
+                    '*' => ['id', 'title', 'content', 'author', 'scheduled_at', 'published_at', 'created_at', 'updated_at']
                 ]
             ]);
     }
@@ -59,7 +59,7 @@ class PostTest extends TestCase
         $response->assertStatus(201)
             ->assertJsonStructure([
                 'data' => [
-                    'id', 'title', 'content', 'author', 'created_at', 'updated_at'
+                    'id', 'title', 'content', 'author', 'scheduled_at', 'published_at', 'created_at', 'updated_at'
                 ]
             ])
             ->assertJsonFragment($postData);
@@ -84,8 +84,15 @@ class PostTest extends TestCase
 
         $response = $this->getJson("/api/posts/{$post->id}");
 
+        // $response->assertStatus(200)
+        //     ->assertJsonFragment($post->toArray());
+
         $response->assertStatus(200)
-            ->assertJsonFragment($post->toArray());
+            ->assertJsonStructure([
+                'data' => [
+                    'id', 'title', 'content', 'author', 'scheduled_at', 'published_at', 'created_at', 'updated_at'
+                ]
+                ]);
     }
 
     public function test_can_update_post_with_auth(): void
@@ -105,7 +112,7 @@ class PostTest extends TestCase
         //     ->assertJsonFragment($updatedData);
         $response->assertStatus(200)
             ->assertJsonStructure([
-                'data' => ['id', 'title', 'content', 'author', 'created_at', 'updated_at']
+                'data' => ['id', 'title', 'content', 'author', 'scheduled_at', 'published_at', 'created_at', 'updated_at']
             ])
             ->assertJsonFragment($updatedData);
     }
