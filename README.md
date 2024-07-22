@@ -87,6 +87,12 @@ This API uses Laravel Sanctum for authentication. To authenticate:
 Authorization: Bearer {received_access_token}
 ```
 
+Default user:
+```
+email: cube@test.com
+password: cubetest
+```
+
 ## Running Tests
 
 To run the tests, it's better to set up a new database to preserve the original one. Copy the `.env.example` file to `.env.testing` and configure the test database settings:
