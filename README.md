@@ -45,6 +45,11 @@ This is a simple RESTful API for a blog post system using Laravel. It provides C
    php artisan l5-swagger:generate
    ```
 
+8. Run Queue for handling jobs:
+   ```
+   php artisan queue:work
+   ```
+
 ## Running the Application
 
 To start the development server, run:

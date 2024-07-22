@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
+use App\Jobs\SchedulePostJob;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Models\Post;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
 
 /**
  * @OA\Info(
@@ -44,6 +46,8 @@ class PostController extends Controller
      *                 @OA\Property(property="title", type="string"),
      *                 @OA\Property(property="content", type="string"),
      *                 @OA\Property(property="author", type="string"),
+     *                 @OA\Property(property="scheduled_at", type="string", format="date-time"),
+     *                 @OA\Property(property="published_at", type="string", format="date-time"),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time")
      *             )
@@ -78,6 +82,8 @@ class PostController extends Controller
      *                 @OA\Property(property="title", type="string"),
      *                 @OA\Property(property="content", type="string"),
      *                 @OA\Property(property="author", type="string"),
+     *                 @OA\Property(property="scheduled_at", type="string", format="date-time"),
+     *                 @OA\Property(property="published_at", type="string", format="date-time"),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time")
      *             )
@@ -97,6 +103,19 @@ class PostController extends Controller
     public function store(PostRequest $request): PostResource
     {
         $post = Post::create($request->validated());
+
+        if ($request->has('scheduled_at')) {
+            $post->scheduled_at = Carbon::parse($request->scheduled_at);
+        } else {
+            $post->published_at = Carbon::now();
+        }
+        $post->save();
+
+        if ($post->scheduled_at) {
+            SchedulePostJob::dispatch($post)
+                ->delay($post->scheduled_at);
+        }
+
         // return response()->json($post, 201);
         return new PostResource($post);
     }
@@ -122,6 +141,8 @@ class PostController extends Controller
      *                 @OA\Property(property="title", type="string"),
      *                 @OA\Property(property="content", type="string"),
      *                 @OA\Property(property="author", type="string"),
+     *                 @OA\Property(property="scheduled_at", type="string", format="date-time"),
+     *                 @OA\Property(property="published_at", type="string", format="date-time"),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time")
      *             )
@@ -171,6 +192,8 @@ class PostController extends Controller
      *                 @OA\Property(property="title", type="string"),
      *                 @OA\Property(property="content", type="string"),
      *                 @OA\Property(property="author", type="string"),
+     *                 @OA\Property(property="scheduled_at", type="string", format="date-time"),
+     *                 @OA\Property(property="published_at", type="string", format="date-time"),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time")
      *             )

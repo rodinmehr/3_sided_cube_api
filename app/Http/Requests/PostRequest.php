@@ -25,6 +25,7 @@ class PostRequest extends FormRequest
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'author' => 'required|string|max:100',
+            'scheduled_at' => 'nullable|date|after:now',
         ];
     }
 }

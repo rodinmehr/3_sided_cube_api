@@ -10,4 +10,6 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'content', 'author'];
+
+    protected $dates = ['scheduled_at', 'published_at'];
 }
