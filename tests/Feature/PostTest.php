@@ -30,8 +30,15 @@ class PostTest extends TestCase
 
         $response = $this->getJson('/api/posts');
 
+        // $response->assertStatus(200)
+        //     ->assertJsonCount(3);
         $response->assertStatus(200)
-            ->assertJsonCount(3);
+            ->assertJsonCount(3, 'data')
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => ['id', 'title', 'content', 'author', 'created_at', 'updated_at']
+                ]
+            ]);
     }
 
     public function test_can_create_post_with_auth(): void
@@ -46,7 +53,15 @@ class PostTest extends TestCase
 
         $response = $this->postJson('/api/posts', $postData);
 
+        // $response->assertStatus(201)
+        //     ->assertJsonFragment($postData);
+
         $response->assertStatus(201)
+            ->assertJsonStructure([
+                'data' => [
+                    'id', 'title', 'content', 'author', 'created_at', 'updated_at'
+                ]
+            ])
             ->assertJsonFragment($postData);
     }
 
@@ -86,7 +101,12 @@ class PostTest extends TestCase
 
         $response = $this->putJson("/api/posts/{$post->id}", $updatedData);
 
+        // $response->assertStatus(200)
+        //     ->assertJsonFragment($updatedData);
         $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => ['id', 'title', 'content', 'author', 'created_at', 'updated_at']
+            ])
             ->assertJsonFragment($updatedData);
     }
 
