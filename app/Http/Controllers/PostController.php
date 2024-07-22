@@ -9,7 +9,13 @@ use App\Models\Post;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
-
+/**
+ * @OA\Info(
+ *     version="1.0.0",
+ *     title="3 Sided Cube API",
+ *     description="A simple RESTful API for a blog post system."
+ * )
+ */
 class PostController extends Controller
 {
     public function __construct()
@@ -33,6 +39,38 @@ class PostController extends Controller
         return new PostResource($post);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/posts/{id}",
+     *     summary="Show a specific post",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the post",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="content", type="string"),
+     *                 @OA\Property(property="author", type="string"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
+     *     )
+     * )
+     */
     // public function show(Post $post): JsonResponse
     public function show(Post $post): PostResource
     {

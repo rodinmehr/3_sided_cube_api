@@ -31,18 +31,18 @@ This is a simple RESTful API for a blog post system using Laravel. It provides C
    php artisan key:generate
    ```
 
-5. Publish Laravel Sanctum provider (if applicable):
-   ```
-   php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
-   ```
-
-6. Run migrations:
+5. Run migrations:
    ```
    php artisan migrate
    ```
-7. Seed the database with sample data:
+6. Seed the database with sample data:
    ```
    php artisan db:seed
+   ```
+
+7. Generate OpenAPI (Swagger) documentation:
+   ```
+   php artisan l5-swagger:generate
    ```
 
 ## Running the Application
@@ -66,6 +66,10 @@ The API will be available at `http://localhost:8000/api`.
 - DELETE `/api/posts/{id}`: Delete a specific post (Requires Authentication)
 
 You can use Postman collection that is provided in `3_sided_cube_api.postman_collection.json` file to test the endpoints.
+
+## API Documentation
+
+API documentation is available here: `http://localhost:8000/api/documentation` where detailed information about the API endpoints is displayed.
 
 ## Authentication
 
