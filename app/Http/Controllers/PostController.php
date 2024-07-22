@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->only(['store', 'update', 'destroy']);
+    }
+
     public function index(): JsonResponse
     {
         $posts = Post::all();
@@ -16,8 +22,12 @@ class PostController extends Controller
 
     public function store(PostRequest $request): JsonResponse
     {
-        $post = Post::create($request->validated());
-        return response()->json($post, 201);
+        try {
+            $post = Post::create($request->validated());
+            return response()->json($post, 201);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Error creating the post.'], 500);
+        }
     }
 
     public function show(Post $post): JsonResponse
@@ -27,13 +37,21 @@ class PostController extends Controller
 
     public function update(PostRequest $request, Post $post): JsonResponse
     {
-        $post->update($request->validated());
-        return response()->json($post);
+        try {
+            $post->update($request->validated());
+            return response()->json($post);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Error updating the post.'], 500);
+        }
     }
 
     public function destroy(Post $post): JsonResponse
     {
-        $post->delete();
-        return response()->json(null, 204);
+        try {
+            $post->delete();
+            return response()->json(null, 204);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Error deleting the post.'], 500);
+        }
     }
 }

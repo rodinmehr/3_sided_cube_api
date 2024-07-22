@@ -31,9 +31,18 @@ This is a simple RESTful API for a blog post system using Laravel. It provides C
    php artisan key:generate
    ```
 
-5. Run migrations:
+5. Publish Laravel Sanctum provider:
+   ```
+   php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+   ```
+
+6. Run migrations:
    ```
    php artisan migrate
+   ```
+7. Seed the database with sample data:
+   ```
+   php artisan db:seed
    ```
 
 ## Running the Application
@@ -64,6 +73,7 @@ cp .env.example .env.testing
 Run migrations:
 
 ```
+php artisan config:cache --env=.env.testing
 php artisan migrate --env=.env.testing
 ```
 
